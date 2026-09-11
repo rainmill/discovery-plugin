@@ -1,0 +1,34 @@
+[package]
+name = "rainmill-discovery"
+version = "0.1.0"
+description = "Rainmill Discovery: the files a site publishes about itself (robots.txt, sitemap.xml, llms.txt, humans.txt, security.txt), for Laterite"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/rainmill/discovery-plugin"
+
+[features]
+# The admin module: settings screens, public routes, and the content sources
+# other modules contribute. This is what an application installing the plugin
+# wants.
+default = ["admin"]
+admin = ["dep:laterite-core", "dep:laterite-admin", "dep:sqlx", "dep:serde_json"]
+
+[dependencies]
+# The core half has no Laterite dependency at all: a static site generator
+# renders these files at build time with no database, no admin and no async
+# runtime, so it depends on this crate with default-features = false.
+chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
+serde = { version = "1", features = ["derive"] }
+
+# The admin half. Version-only so this manifest is location-independent; the
+# workspace that builds the plugin resolves them through its own
+# [patch.crates-io] until Laterite publishes.
+# Settings values are stored as JSON, so this belongs to the admin half too.
+serde_json = { version = "1", optional = true }
+laterite-core = { version = "0.4", optional = true }
+laterite-admin = { version = "0.4", optional = true }
+sqlx = { version = "0.8", default-features = false, features = [
+    "runtime-tokio",
+    "tls-rustls",
+    "any",
+], optional = true }

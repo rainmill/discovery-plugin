@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# The core half (the documents and their renderers) has no Laterite dependency,
+# so it builds, lints and tests standalone. That is the architectural claim
+# behind the feature split, and this job is what keeps it true: a dependency that
+# crept into the core would fail here.
+#
+# The `admin` half is covered by the application workspace that builds it, until
+# Laterite publishes and it can resolve here too.
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all --check
+      - run: cargo clippy --all-targets --no-default-features -- -D warnings
+      - run: cargo test --no-default-features
