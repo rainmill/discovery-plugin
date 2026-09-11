@@ -11,7 +11,7 @@ repository = "https://github.com/rainmill/discovery-plugin"
 # other modules contribute. This is what an application installing the plugin
 # wants.
 default = ["admin"]
-admin = ["dep:laterite-core", "dep:laterite-admin", "dep:sqlx", "dep:serde_json"]
+admin = ["dep:laterite-core", "dep:laterite-admin", "dep:axum", "dep:serde_json"]
 
 [dependencies]
 # The core half has no Laterite dependency at all: a static site generator
@@ -27,8 +27,5 @@ serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", optional = true }
 laterite-core = { version = "0.4", optional = true }
 laterite-admin = { version = "0.4", optional = true }
-sqlx = { version = "0.8", default-features = false, features = [
-    "runtime-tokio",
-    "tls-rustls",
-    "any",
-], optional = true }
+# The routes are axum routers, matching the framework.
+axum = { version = "0.8", optional = true }

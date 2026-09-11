@@ -21,6 +21,15 @@
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+#[cfg(feature = "admin")]
+#[cfg_attr(docsrs, doc(cfg(feature = "admin")))]
+pub mod admin;
+
+/// Every plugin exposes `module()` at its crate root, which is what the
+/// generated manifest calls. A static-site consumer builds without the `admin`
+/// feature and has no module to register, so this goes with it.
+#[cfg(feature = "admin")]
+pub use admin::module;
 pub mod humans;
 pub mod llms;
 pub mod robots;

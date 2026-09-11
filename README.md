@@ -44,3 +44,35 @@ render, so no surface can forget it.
 It is repeated in **every** user-agent group, not only `*`. Under RFC 9309 a
 crawler obeys only the most specific group matching it, so an exclusion in `*`
 does not reach a crawler that names itself.
+
+## Contributing URLs to the sitemap
+
+The sitemap knows nothing about content types. A module that owns pages answers
+for them:
+
+```rust
+use rainmill_discovery::admin::{UrlSource, UrlSourceReg};
+use rainmill_discovery::sitemap::Entry;
+
+#[async_trait]
+impl UrlSource for Pages {
+    async fn urls(&self, db: &Db) -> Vec<Entry> {
+        load_published(db).await.into_iter()
+            .map(|page| Entry::new(page.path).lastmod(page.updated_at))
+            .collect()
+    }
+}
+
+// from the module's `register`
+registry.add(UrlSourceReg::new("acme.pages", Arc::new(Pages)));
+```
+
+Sources are collected once at boot, so registration order does not matter, and
+the sitemap never goes looking for content: content declares itself.
+
+## Editing
+
+With the `admin` feature, each document gets a settings screen under Discovery,
+gated by `rainmill.discovery.manage`. The screens edit a flat projection of each
+document (rows of text rather than nested structures); the projection is the only
+place the editable shape and the rendered shape meet.
