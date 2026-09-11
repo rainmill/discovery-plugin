@@ -6,10 +6,12 @@
 
 use std::sync::Arc;
 
-use axum::http::header;
-use axum::response::IntoResponse;
-use axum::routing::get;
-use axum::Router;
+// Never `axum` directly: the framework re-exports the one version a contributed
+// route must build against, so two majors cannot link side by side.
+use laterite_admin::axum::http::header;
+use laterite_admin::axum::response::IntoResponse;
+use laterite_admin::axum::routing::get;
+use laterite_admin::axum::Router;
 use laterite_admin::routes::{PublicRoute, PublicRouteReg, RouteCtx};
 use laterite_core::Db;
 
@@ -75,7 +77,16 @@ impl Serve {
                 (file.content_type(), file.render(&cx))
             }
         };
-        ([(header::CONTENT_TYPE, content_type)], body)
+        // These change rarely and are fetched by machines on a schedule, so they
+        // are worth caching. An hour is short enough that an edit shows up the
+        // same day and long enough to spare the database on every crawl.
+        (
+            [
+                (header::CONTENT_TYPE, content_type),
+                (header::CACHE_CONTROL, "public, max-age=3600"),
+            ],
+            body,
+        )
     }
 }
 

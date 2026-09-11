@@ -1399,7 +1399,6 @@ dependencies = [
 name = "rainmill-discovery"
 version = "0.1.0"
 dependencies = [
- "axum",
  "chrono",
  "laterite-admin",
  "laterite-core",
