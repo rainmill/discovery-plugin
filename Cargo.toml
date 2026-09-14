@@ -6,6 +6,12 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rainmill/discovery-plugin"
 
+# Marks this crate as a Laterite plugin and names the module it registers, so a
+# tool can tell what it is without building it. Which Laterite it supports is
+# stated by the dependency requirement below, never repeated here.
+[package.metadata.laterite]
+plugin = "rainmill.discovery"
+
 [features]
 # The admin module: settings screens, public routes, and the content sources
 # other modules contribute. This is what an application installing the plugin
