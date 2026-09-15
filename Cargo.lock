@@ -385,6 +385,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "csv"
+version = "1.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "52cd9d68cf7efc6ddfaaee42e7288d3a99d613d4b50f76ce9827ae0c6e14f938"
+dependencies = [
+ "csv-core",
+ "itoa",
+ "ryu",
+ "serde_core",
+]
+
+[[package]]
+name = "csv-core"
+version = "0.1.13"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "704a3c26996a80471189265814dbc2c257598b96b8a7feae2d31ace646bb9782"
+dependencies = [
+ "memchr",
+]
+
+[[package]]
 name = "darling"
 version = "0.20.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -964,9 +985,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-admin"
-version = "0.4.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cf14ff21df131d748c87e3313cc6f8c547611b7183fe4a9ed3df7657fd345481"
+checksum = "8a5b5170529bc3016970ce930f53e890303ca954fe8cca6285c01f27ac300c4b"
 dependencies = [
  "anyhow",
  "askama",
@@ -974,6 +995,7 @@ dependencies = [
  "axum-extra",
  "chrono",
  "chrono-tz",
+ "csv",
  "form_urlencoded",
  "laterite-auth",
  "laterite-core",
@@ -992,9 +1014,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-auth"
-version = "0.4.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c47a4a85d7a0f0b85e542f7ab98c9421ea1be27c91c7f81128035b5289124755"
+checksum = "d075a0dca1b764eda167901b6a47b19a9b0e5798fec845c80cff4876ef67e679"
 dependencies = [
  "argon2",
  "async-trait",
@@ -1012,9 +1034,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-core"
-version = "0.4.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f179eab186a690c0ba7d6ea3e33898351bd1e082af5a91e7a5d893ede70bb3d6"
+checksum = "61d91787bb2794dfc235490c088f4401baf4585f77cc3ad7512759ac4eb2d98b"
 dependencies = [
  "async-trait",
  "chrono",
@@ -1026,14 +1048,15 @@ dependencies = [
  "serde_json",
  "sqlx",
  "thiserror",
+ "unicode-normalization",
  "url",
 ]
 
 [[package]]
 name = "laterite-macros"
-version = "0.4.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bcb88259ce0ee4b2f37e36576e4881e86710a98cdbc8a45cf11cb81bde15b3ce"
+checksum = "8dc3a6954ed54c904e7ced5a1dd69a3d1ac077e04372f20c4bf610214fcb4eaf"
 dependencies = [
  "proc-macro2",
  "quote",

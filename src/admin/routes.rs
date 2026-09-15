@@ -77,13 +77,15 @@ impl Serve {
                 (file.content_type(), file.render(&cx))
             }
         };
-        // These change rarely and are fetched by machines on a schedule, so they
-        // are worth caching. An hour is short enough that an edit shows up the
-        // same day and long enough to spare the database on every crawl.
+        // Cached, but revalidated: these are fetched by machines on a schedule,
+        // and an hour of blind caching would mean an operator saves a change in
+        // the admin and watches nothing happen. `no-cache` still allows a cache
+        // to keep the copy; it just has to ask first, which a conditional
+        // request answers cheaply.
         (
             [
                 (header::CONTENT_TYPE, content_type),
-                (header::CACHE_CONTROL, "public, max-age=3600"),
+                (header::CACHE_CONTROL, "public, no-cache"),
             ],
             body,
         )
