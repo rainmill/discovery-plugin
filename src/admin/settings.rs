@@ -161,9 +161,11 @@ fn robots_item() -> SettingsItem {
             )),
         ],
     )
-    .description(t!(
-        "What search engines and other crawlers may visit. The admin panel \
-             is always excluded, whatever you put here."
+    .description(t!("Which crawlers may visit, and what they may not."))
+    // The precedence note lives on the Rules field, where it is being acted on;
+    // repeating it here would say the same sentence twice on one screen.
+    .hint(t!(
+        "The admin panel is always excluded, whatever you put here."
     ))
     .category(category())
     .order(10)
@@ -251,9 +253,10 @@ fn sitemap_item() -> SettingsItem {
             ],
         )],
     )
-    .description(t!(
-        "The pages you want search engines to know about. Modules that own \
-             content add their own pages automatically; these are the extras."
+    .description(t!("Pages you want search engines to know about."))
+    .hint(t!(
+        "Modules that own content add their own pages automatically, so these are the \
+         extras: anything the application does not already publish for itself."
     ))
     .category(category())
     .order(20)
@@ -355,9 +358,10 @@ fn llms_item() -> SettingsItem {
             ),
         ],
     )
-    .description(t!(
-        "A short description of this site and the pages worth reading, for \
-             assistants that look for one."
+    .description(t!("A summary of this site for language models."))
+    .hint(t!(
+        "Assistants that look for one will read this: a short description of the site \
+         and the pages worth reading."
     ))
     .category(category())
     .order(30)
@@ -423,9 +427,10 @@ fn humans_item() -> SettingsItem {
             ],
         )],
     )
-    .description(t!(
-        "The people behind the site, and anything you want to say about how \
-             it was built."
+    .description(t!("The people behind the site."))
+    .hint(t!(
+        "Credits for whoever built and runs the site, and anything you want to say \
+         about how it was made."
     ))
     .category(category())
     .order(40)
@@ -518,9 +523,10 @@ fn security_item() -> SettingsItem {
                 .help(t!("Comma-separated language tags, such as en, de.")),
         ],
     )
-    .description(t!(
-        "Where to report a security problem with this site, published at the \
-             address researchers look for."
+    .description(t!("Where to report a security problem."))
+    .hint(t!(
+        "Published at the well-known address security researchers check first, so a \
+         report reaches you rather than going nowhere."
     ))
     .category(category())
     .order(50)
