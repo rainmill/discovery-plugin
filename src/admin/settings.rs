@@ -158,9 +158,13 @@ fn robots_item() -> SettingsItem {
             )),
             FormField::repeater(
                 "sitemaps",
-                t!("Sitemaps"),
+                t!("Other sitemaps"),
                 vec![FormField::text("url", t!("URL"))],
-            ),
+            )
+            .help(t!(
+                "This site's own sitemap is listed automatically. Add others here: \
+                 one hosted elsewhere, or a separate feed for news or images."
+            )),
         ],
     }
 }
@@ -568,6 +572,42 @@ mod tests {
         assert!(out.contains("Allow: /public/\n"));
         assert!(out.contains("Crawl-delay: 10\n"));
         assert!(out.contains("Sitemap: https://acme.example/sitemap.xml"));
+    }
+
+    /// The plugin serves the sitemap, so robots names it without being told.
+    /// An operator typing the path of a file their own plugin publishes is an
+    /// invitation to get it wrong, and to not notice when the mount moves.
+    #[test]
+    fn robots_advertises_the_sitemap_this_plugin_serves() {
+        use crate::sitemap::Sitemap;
+        let mut doc = RobotsSettings::default().into_document();
+        let own = Sitemap::default().path().to_string();
+        if !doc.sitemaps.iter().any(|s| s.ends_with(&own)) {
+            doc.sitemaps.insert(0, own);
+        }
+        let out = doc.render(&cx());
+        assert!(
+            out.contains("Sitemap: https://acme.example/sitemap.xml"),
+            "{out}"
+        );
+    }
+
+    /// An operator who typed it anyway does not get it twice.
+    #[test]
+    fn a_sitemap_already_listed_is_not_repeated() {
+        let mut doc = RobotsSettings {
+            sitemaps: vec![UrlRow {
+                url: "/sitemap.xml".into(),
+            }],
+            ..Default::default()
+        }
+        .into_document();
+        let own = crate::sitemap::Sitemap::default().path().to_string();
+        if !doc.sitemaps.iter().any(|s| s.ends_with(&own)) {
+            doc.sitemaps.insert(0, own);
+        }
+        let out = doc.render(&cx());
+        assert_eq!(out.matches("Sitemap:").count(), 1, "{out}");
     }
 
     #[test]

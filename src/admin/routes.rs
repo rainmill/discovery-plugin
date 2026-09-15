@@ -8,7 +8,7 @@ use std::sync::Arc;
 
 // Never `axum` directly: the framework re-exports the one version a contributed
 // route must build against, so two majors cannot link side by side.
-use laterite_admin::axum::http::header;
+use laterite_admin::axum::http::HeaderMap;
 use laterite_admin::axum::response::IntoResponse;
 use laterite_admin::axum::routing::get;
 use laterite_admin::axum::Router;
@@ -19,6 +19,7 @@ use super::settings::{
     HumansSettings, LlmsSettings, RobotsSettings, SecuritySettings, SitemapSettings,
 };
 use super::UrlSourceReg;
+use crate::sitemap::Sitemap;
 use crate::{SiteContext, SiteFile};
 
 /// Which document a route serves. One route type covers all five: they differ
@@ -47,14 +48,21 @@ impl Serve {
         SiteContext::new(self.base_url.as_ref()).with_admin(self.admin_path.as_ref())
     }
 
-    async fn render(self) -> impl IntoResponse {
+    async fn render(self, headers: HeaderMap) -> impl IntoResponse {
         let cx = self.context();
         // A settings read that fails renders the document's default rather than
         // erroring: a crawler asking for robots.txt must not get a 500, and the
         // default still excludes the panel.
         let (content_type, body) = match self.document {
             Document::Robots => {
-                let file = load::<RobotsSettings>(&self.db).await.into_document();
+                let mut file = load::<RobotsSettings>(&self.db).await.into_document();
+                // This plugin publishes the sitemap, so robots names it without
+                // being told. Asking an operator to type the path of a file its
+                // own plugin serves is asking them to get it wrong.
+                let own = Sitemap::default().path().to_string();
+                if !file.sitemaps.iter().any(|s| s.ends_with(&own)) {
+                    file.sitemaps.insert(0, own);
+                }
                 (file.content_type(), file.render(&cx))
             }
             Document::Sitemap => {
@@ -80,14 +88,13 @@ impl Serve {
         // Cached, but revalidated: these are fetched by machines on a schedule,
         // and an hour of blind caching would mean an operator saves a change in
         // the admin and watches nothing happen. `no-cache` still allows a cache
-        // to keep the copy; it just has to ask first, which a conditional
-        // request answers cheaply.
-        (
-            [
-                (header::CONTENT_TYPE, content_type),
-                (header::CACHE_CONTROL, "public, no-cache"),
-            ],
-            body,
+        // to keep the copy; it just has to ask first, and the validator makes
+        // that answer a bodyless 304 whenever the settings have not moved.
+        laterite_admin::http_cache::conditional(
+            &headers,
+            content_type,
+            laterite_admin::http_cache::REVALIDATE,
+            body.into_bytes(),
         )
     }
 }
@@ -118,9 +125,9 @@ impl PublicRoute for FileRoute {
         };
         Router::new().route(
             "/",
-            get(move || {
+            get(move |headers: HeaderMap| {
                 let serve = serve.clone();
-                async move { serve.render().await }
+                async move { serve.render(headers).await }
             }),
         )
     }
