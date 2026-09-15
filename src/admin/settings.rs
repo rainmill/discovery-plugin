@@ -128,20 +128,13 @@ impl RobotsSettings {
 }
 
 fn robots_item() -> SettingsItem {
-    SettingsItem {
-        code: RobotsSettings::CODE.to_string(),
-        label: t!("Crawler rules"),
-        description: t!(
-            "What search engines and other crawlers may visit. The admin panel \
-             is always excluded, whatever you put here."
-        ),
-        category: category(),
-        order: 10,
-        icon: Some("bot".to_string()),
-        permission: Some(PERMISSION.to_string()),
-        link: None,
-        fields: vec![
-            FormField::repeater(
+    SettingsItem::new(
+        RobotsSettings::CODE,
+        t!("Crawler rules"),
+        vec![
+            // Four fields side by side is a table nobody can read, so a rule
+            // collapses to the crawler it addresses and opens one at a time.
+            FormField::repeater_list(
                 "groups",
                 t!("Rules"),
                 vec![
@@ -151,10 +144,11 @@ fn robots_item() -> SettingsItem {
                     FormField::textarea("allow", t!("Allow")),
                     FormField::text("crawl_delay", t!("Crawl delay (seconds)")),
                 ],
+                Some("agents"),
             )
             .help(t!(
                 "A crawler obeys only the block that names it, so a crawler with \
-                 its own block ignores the catch-all entirely."
+                     its own block ignores the catch-all entirely."
             )),
             FormField::repeater(
                 "sitemaps",
@@ -163,10 +157,18 @@ fn robots_item() -> SettingsItem {
             )
             .help(t!(
                 "This site's own sitemap is listed automatically. Add others here: \
-                 one hosted elsewhere, or a separate feed for news or images."
+                     one hosted elsewhere, or a separate feed for news or images."
             )),
         ],
-    }
+    )
+    .description(t!(
+        "What search engines and other crawlers may visit. The admin panel \
+             is always excluded, whatever you put here."
+    ))
+    .category(category())
+    .order(10)
+    .icon("bot")
+    .permission(PERMISSION)
 }
 
 // --------------------------------------------------------------- sitemap.xml
@@ -221,19 +223,10 @@ impl SitemapSettings {
 }
 
 fn sitemap_item() -> SettingsItem {
-    SettingsItem {
-        code: SitemapSettings::CODE.to_string(),
-        label: t!("Sitemap"),
-        description: t!(
-            "The pages you want search engines to know about. Modules that own \
-             content add their own pages automatically; these are the extras."
-        ),
-        category: category(),
-        order: 20,
-        icon: Some("map".to_string()),
-        permission: Some(PERMISSION.to_string()),
-        link: None,
-        fields: vec![FormField::repeater(
+    SettingsItem::new(
+        SitemapSettings::CODE,
+        t!("Sitemap"),
+        vec![FormField::repeater(
             "entries",
             t!("Pages"),
             vec![
@@ -254,10 +247,18 @@ fn sitemap_item() -> SettingsItem {
                 ),
                 FormField::text("priority", t!("Priority"))
                     .help(t!("0.0 to 1.0, relative to your other pages. Blank means \
-                         the default of 0.5.")),
+                             the default of 0.5.")),
             ],
         )],
-    }
+    )
+    .description(t!(
+        "The pages you want search engines to know about. Modules that own \
+             content add their own pages automatically; these are the extras."
+    ))
+    .category(category())
+    .order(20)
+    .icon("map")
+    .permission(PERMISSION)
 }
 
 // ------------------------------------------------------------------ llms.txt
@@ -331,19 +332,10 @@ impl LlmsSettings {
 }
 
 fn llms_item() -> SettingsItem {
-    SettingsItem {
-        code: LlmsSettings::CODE.to_string(),
-        label: t!("Summary for language models"),
-        description: t!(
-            "A short description of this site and the pages worth reading, for \
-             assistants that look for one."
-        ),
-        category: category(),
-        order: 30,
-        icon: Some("sparkles".to_string()),
-        permission: Some(PERMISSION.to_string()),
-        link: None,
-        fields: vec![
+    SettingsItem::new(
+        LlmsSettings::CODE,
+        t!("Summary for language models"),
+        vec![
             FormField::text("title", t!("Site name")).required(),
             FormField::textarea("summary", t!("One-line summary")),
             FormField::textarea("details", t!("Description")).help(t!(
@@ -355,14 +347,22 @@ fn llms_item() -> SettingsItem {
                 vec![
                     FormField::text("section", t!("Section"))
                         .help(t!("Links sharing a section are grouped under it. Name a \
-                         section Optional for things a reader may skip.")),
+                             section Optional for things a reader may skip.")),
                     FormField::text("title", t!("Title")),
                     FormField::text("url", t!("URL")),
                     FormField::text("note", t!("Note")),
                 ],
             ),
         ],
-    }
+    )
+    .description(t!(
+        "A short description of this site and the pages worth reading, for \
+             assistants that look for one."
+    ))
+    .category(category())
+    .order(30)
+    .icon("sparkles")
+    .permission(PERMISSION)
 }
 
 // ---------------------------------------------------------------- humans.txt
@@ -409,19 +409,10 @@ impl HumansSettings {
 }
 
 fn humans_item() -> SettingsItem {
-    SettingsItem {
-        code: HumansSettings::CODE.to_string(),
-        label: t!("Credits"),
-        description: t!(
-            "The people behind the site, and anything you want to say about how \
-             it was built."
-        ),
-        category: category(),
-        order: 40,
-        icon: Some("users".to_string()),
-        permission: Some(PERMISSION.to_string()),
-        link: None,
-        fields: vec![FormField::repeater(
+    SettingsItem::new(
+        HumansSettings::CODE,
+        t!("Credits"),
+        vec![FormField::repeater(
             "entries",
             t!("Entries"),
             vec![
@@ -431,7 +422,15 @@ fn humans_item() -> SettingsItem {
                 FormField::text("value", t!("Value")),
             ],
         )],
-    }
+    )
+    .description(t!(
+        "The people behind the site, and anything you want to say about how \
+             it was built."
+    ))
+    .category(category())
+    .order(40)
+    .icon("users")
+    .permission(PERMISSION)
 }
 
 // -------------------------------------------------------------- security.txt
@@ -492,19 +491,10 @@ impl SecuritySettings {
 }
 
 fn security_item() -> SettingsItem {
-    SettingsItem {
-        code: SecuritySettings::CODE.to_string(),
-        label: t!("Security contact"),
-        description: t!(
-            "Where to report a security problem with this site, published at the \
-             address researchers look for."
-        ),
-        category: category(),
-        order: 50,
-        icon: Some("shield".to_string()),
-        permission: Some(PERMISSION.to_string()),
-        link: None,
-        fields: vec![
+    SettingsItem::new(
+        SecuritySettings::CODE,
+        t!("Security contact"),
+        vec![
             FormField::repeater(
                 "contacts",
                 t!("Contacts"),
@@ -512,13 +502,13 @@ fn security_item() -> SettingsItem {
             )
             .help(t!(
                 "An email address as mailto:you@example.com, or a form as an \
-                 https: URL. Most preferred first."
+                     https: URL. Most preferred first."
             )),
             FormField::date("expires", t!("Valid until"))
                 .required()
                 .help(t!(
                     "Set a date within the next year and revisit it. An expired \
-                     file tells a researcher nobody is reading the inbox."
+                         file tells a researcher nobody is reading the inbox."
                 )),
             FormField::text("policy", t!("Policy URL")),
             FormField::text("acknowledgments", t!("Acknowledgements URL")),
@@ -527,7 +517,15 @@ fn security_item() -> SettingsItem {
             FormField::text("preferred_languages", t!("Preferred languages"))
                 .help(t!("Comma-separated language tags, such as en, de.")),
         ],
-    }
+    )
+    .description(t!(
+        "Where to report a security problem with this site, published at the \
+             address researchers look for."
+    ))
+    .category(category())
+    .order(50)
+    .icon("shield")
+    .permission(PERMISSION)
 }
 
 pub fn items() -> Vec<SettingsItem> {
