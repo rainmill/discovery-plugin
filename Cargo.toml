@@ -31,5 +31,5 @@ serde = { version = "1", features = ["derive"] }
 # [patch.crates-io] until Laterite publishes.
 # Settings values are stored as JSON, so this belongs to the admin half too.
 serde_json = { version = "1", optional = true }
-laterite-core = { version = "0.6", optional = true }
-laterite-admin = { version = "0.6", optional = true }
+laterite-core = { version = "0.7", optional = true }
+laterite-admin = { version = "0.7", optional = true }
