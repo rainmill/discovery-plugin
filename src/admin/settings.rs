@@ -26,11 +26,8 @@ use crate::sitemap::{ChangeFreq, Entry, Sitemap};
 pub const PERMISSION: &str = "rainmill.discovery.manage";
 
 pub fn permission() -> Permission {
-    Permission {
-        code: PERMISSION.to_string(),
-        label: t!("Manage site discovery files"),
-        group: category(),
-    }
+    // robots.txt and the sitemap are the panel's business, not an editor's.
+    Permission::new(PERMISSION, t!("Manage site discovery files"), category())
 }
 
 fn category() -> laterite_core::Text {
