@@ -84,8 +84,8 @@ impl SiteFile for Llms {
         "/llms.txt"
     }
 
-    fn content_type(&self) -> &'static str {
-        "text/markdown; charset=utf-8"
+    fn content_type(&self) -> std::borrow::Cow<'static, str> {
+        std::borrow::Cow::Borrowed("text/markdown; charset=utf-8")
     }
 
     fn render(&self, cx: &SiteContext) -> String {

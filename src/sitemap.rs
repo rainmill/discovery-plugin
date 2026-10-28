@@ -115,8 +115,8 @@ impl SiteFile for Sitemap {
         "/sitemap.xml"
     }
 
-    fn content_type(&self) -> &'static str {
-        "application/xml; charset=utf-8"
+    fn content_type(&self) -> std::borrow::Cow<'static, str> {
+        std::borrow::Cow::Borrowed("application/xml; charset=utf-8")
     }
 
     fn render(&self, cx: &SiteContext) -> String {

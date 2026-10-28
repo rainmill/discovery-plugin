@@ -85,8 +85,8 @@ impl SiteFile for Robots {
         "/robots.txt"
     }
 
-    fn content_type(&self) -> &'static str {
-        "text/plain; charset=utf-8"
+    fn content_type(&self) -> std::borrow::Cow<'static, str> {
+        std::borrow::Cow::Borrowed("text/plain; charset=utf-8")
     }
 
     fn render(&self, cx: &SiteContext) -> String {

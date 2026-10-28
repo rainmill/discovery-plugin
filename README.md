@@ -15,14 +15,42 @@ serve both kinds of site:
 
 - **A database-backed site** edits the documents in the admin, and a route
   renders each one per request.
-- **A static site** builds them in code and writes them at build time.
+- **A static website** keeps them as YAML under `plugins/rainmill.discovery/`,
+  and the build writes them.
 
-The core half has no dependency on Laterite at all, so a static generator can use
-it without pulling in the admin, a database driver or an async runtime:
+The plugin declares `static = true`, so a static website made with
+`lat new --static` installs it:
 
-```toml
-rainmill-discovery = { version = "0.1", default-features = false }
+```bash
+lat plugin add https://github.com/rainmill/discovery-plugin
 ```
+
+```yaml
+# plugins/rainmill.discovery/robots.yaml
+groups:
+  - agents: ["*"]
+    disallow: ["/drafts/"]
+    crawl_delay: 10
+sitemaps: []
+```
+
+```yaml
+# plugins/rainmill.discovery/sitemap.yaml
+entries:
+  - loc: /
+    priority: 1.0
+    changefreq: weekly
+```
+
+`robots.yaml` and `sitemap.yaml` are optional: without them the policy allows
+everything and the sitemap lists every page the build wrote (it always does,
+beside the entries given and the URLs other modules contribute).
+`llms.yaml`, `humans.yaml` and `security.yaml` hold those documents as the
+crate's types deserialise, and are written when present.
+
+The documents render from the framework's site envelope
+(`laterite_core::site::{SiteContext, SiteFile}`), re-exported here, so a Rust
+generator can also render them itself:
 
 ```rust
 use rainmill_discovery::{SiteContext, SiteFile, robots::{Group, Robots}};
@@ -32,8 +60,8 @@ let robots = Robots { groups: vec![Group::all().disallow("/private/")], sitemaps
 site.file(robots.path(), &robots.render(&cx))?;
 ```
 
-An application with an admin takes the default features instead, and gets the
-settings screens and routes.
+An application with an admin takes the default features and gets the settings
+screens and routes.
 
 ## The admin exclusion
 

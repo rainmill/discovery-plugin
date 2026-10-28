@@ -92,7 +92,7 @@ impl Serve {
         // that answer a bodyless 304 whenever the settings have not moved.
         laterite_admin::http_cache::conditional(
             &headers,
-            content_type,
+            &content_type,
             laterite_admin::http_cache::REVALIDATE,
             body.into_bytes(),
         )
