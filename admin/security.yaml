@@ -1,0 +1,27 @@
+# Settings > Discovery > Security contact (security.txt).
+code: rainmill.discovery.security
+label: Security contact
+description: Where to report a security problem.
+hint: "Published at the well-known address security researchers check first, so a report reaches you rather than going nowhere."
+category: Discovery
+icon: shield
+order: 50
+permission: rainmill.discovery.manage
+fields:
+  contacts:
+    type: repeater
+    help: "An email address as mailto:you@example.com, or a form as an https: URL. Most preferred first."
+    fields:
+      url: { label: Address }
+  expires:
+    type: date
+    label: Valid until
+    rules: [required]
+    help: "Set a date within the next year and revisit it. An expired file tells a researcher nobody is reading the inbox."
+  policy:          { label: Policy URL }
+  acknowledgments: { label: Acknowledgements URL }
+  encryption:      { label: Encryption key URL }
+  hiring:          { label: Hiring URL }
+  preferred_languages:
+    label: Preferred languages
+    help: "Comma-separated language tags, such as en, de."

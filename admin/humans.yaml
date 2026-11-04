@@ -1,0 +1,16 @@
+# Settings > Discovery > Credits (humans.txt).
+code: rainmill.discovery.humans
+label: Credits
+description: The people behind the site.
+hint: "Credits for whoever built and runs the site, and anything you want to say about how it was made."
+category: Discovery
+icon: users
+order: 40
+permission: rainmill.discovery.manage
+fields:
+  entries:
+    type: repeater
+    fields:
+      section: { help: "Such as Team, Thanks, or Site." }
+      label:   {}
+      value:   {}

@@ -1,0 +1,29 @@
+# Settings > Discovery > Crawler rules (robots.txt).
+code: rainmill.discovery.robots
+label: Crawler rules
+description: "Which crawlers may visit, and what they may not."
+hint: "The admin panel is always excluded, whatever you put here."
+category: Discovery
+icon: bot
+order: 10
+permission: rainmill.discovery.manage
+fields:
+  groups:
+    type: repeater
+    label: Rules
+    display: list
+    summary_field: agents
+    help: "A crawler obeys only the block that names it, so a crawler with its own block ignores the catch-all entirely."
+    fields:
+      agents:
+        label: Crawlers
+        help: Comma-separated. Leave blank to address every crawler.
+      disallow: { type: textarea, help: One path per line. }
+      allow:    { type: textarea }
+      crawl_delay: { label: Crawl delay (seconds) }
+  sitemaps:
+    type: repeater
+    label: Other sitemaps
+    help: "This site's own sitemap is listed automatically. Add others here: one hosted elsewhere, or a separate feed for news or images."
+    fields:
+      url: { label: URL }

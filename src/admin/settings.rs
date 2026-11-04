@@ -1,4 +1,5 @@
-//! The editable shape of each document, and the screens that edit it.
+//! The editable shape of each document; the screens that edit it are the
+//! files under `admin/`, one per document.
 //!
 //! Each document gets a settings model of its own rather than being edited as
 //! itself. The rendering types are nested (a robots group holds an enum of
@@ -10,7 +11,7 @@
 //! each row type is a struct of `String` with `#[serde(default)]`.
 
 use chrono::{DateTime, NaiveDate, TimeZone, Utc};
-use laterite_admin::settings::{FormField, SettingsItem, SettingsModel};
+use laterite_admin::settings::{SettingsItem, SettingsModel};
 use laterite_admin::Permission;
 use laterite_core::t;
 use serde::{Deserialize, Serialize};
@@ -124,52 +125,6 @@ impl RobotsSettings {
     }
 }
 
-fn robots_item() -> SettingsItem {
-    SettingsItem::new(
-        RobotsSettings::CODE,
-        t!("Crawler rules"),
-        vec![
-            // Four fields side by side is a table nobody can read, so a rule
-            // collapses to the crawler it addresses and opens one at a time.
-            FormField::repeater_list(
-                "groups",
-                t!("Rules"),
-                vec![
-                    FormField::text("agents", t!("Crawlers"))
-                        .help(t!("Comma-separated. Leave blank to address every crawler.")),
-                    FormField::textarea("disallow", t!("Disallow")).help(t!("One path per line.")),
-                    FormField::textarea("allow", t!("Allow")),
-                    FormField::text("crawl_delay", t!("Crawl delay (seconds)")),
-                ],
-                Some("agents"),
-            )
-            .help(t!(
-                "A crawler obeys only the block that names it, so a crawler with \
-                     its own block ignores the catch-all entirely."
-            )),
-            FormField::repeater(
-                "sitemaps",
-                t!("Other sitemaps"),
-                vec![FormField::text("url", t!("URL"))],
-            )
-            .help(t!(
-                "This site's own sitemap is listed automatically. Add others here: \
-                     one hosted elsewhere, or a separate feed for news or images."
-            )),
-        ],
-    )
-    .description(t!("Which crawlers may visit, and what they may not."))
-    // The precedence note lives on the Rules field, where it is being acted on;
-    // repeating it here would say the same sentence twice on one screen.
-    .hint(t!(
-        "The admin panel is always excluded, whatever you put here."
-    ))
-    .category(category())
-    .order(10)
-    .icon("bot")
-    .permission(PERMISSION)
-}
-
 // --------------------------------------------------------------- sitemap.xml
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -219,46 +174,6 @@ impl SitemapSettings {
         }
         Sitemap { entries }
     }
-}
-
-fn sitemap_item() -> SettingsItem {
-    SettingsItem::new(
-        SitemapSettings::CODE,
-        t!("Sitemap"),
-        vec![FormField::repeater(
-            "entries",
-            t!("Pages"),
-            vec![
-                FormField::text("loc", t!("Path or URL")),
-                FormField::select(
-                    "changefreq",
-                    t!("Changes"),
-                    vec![
-                        ("", "Unspecified"),
-                        ("always", "Always"),
-                        ("hourly", "Hourly"),
-                        ("daily", "Daily"),
-                        ("weekly", "Weekly"),
-                        ("monthly", "Monthly"),
-                        ("yearly", "Yearly"),
-                        ("never", "Never"),
-                    ],
-                ),
-                FormField::text("priority", t!("Priority"))
-                    .help(t!("0.0 to 1.0, relative to your other pages. Blank means \
-                             the default of 0.5.")),
-            ],
-        )],
-    )
-    .description(t!("Pages you want search engines to know about."))
-    .hint(t!(
-        "Modules that own content add their own pages automatically, so these are the \
-         extras: anything the application does not already publish for itself."
-    ))
-    .category(category())
-    .order(20)
-    .icon("map")
-    .permission(PERMISSION)
 }
 
 // ------------------------------------------------------------------ llms.txt
@@ -331,41 +246,6 @@ impl LlmsSettings {
     }
 }
 
-fn llms_item() -> SettingsItem {
-    SettingsItem::new(
-        LlmsSettings::CODE,
-        t!("Summary for language models"),
-        vec![
-            FormField::text("title", t!("Site name")).required(),
-            FormField::textarea("summary", t!("One-line summary")),
-            FormField::textarea("details", t!("Description")).help(t!(
-                "Plain paragraphs. A heading here would start a new section."
-            )),
-            FormField::repeater(
-                "links",
-                t!("Links"),
-                vec![
-                    FormField::text("section", t!("Section"))
-                        .help(t!("Links sharing a section are grouped under it. Name a \
-                             section Optional for things a reader may skip.")),
-                    FormField::text("title", t!("Title")),
-                    FormField::text("url", t!("URL")),
-                    FormField::text("note", t!("Note")),
-                ],
-            ),
-        ],
-    )
-    .description(t!("A summary of this site for language models."))
-    .hint(t!(
-        "Assistants that look for one will read this: a short description of the site \
-         and the pages worth reading."
-    ))
-    .category(category())
-    .order(30)
-    .icon("sparkles")
-    .permission(PERMISSION)
-}
-
 // ---------------------------------------------------------------- humans.txt
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -407,32 +287,6 @@ impl HumansSettings {
         }
         Humans { sections }
     }
-}
-
-fn humans_item() -> SettingsItem {
-    SettingsItem::new(
-        HumansSettings::CODE,
-        t!("Credits"),
-        vec![FormField::repeater(
-            "entries",
-            t!("Entries"),
-            vec![
-                FormField::text("section", t!("Section"))
-                    .help(t!("Such as Team, Thanks, or Site.")),
-                FormField::text("label", t!("Label")),
-                FormField::text("value", t!("Value")),
-            ],
-        )],
-    )
-    .description(t!("The people behind the site."))
-    .hint(t!(
-        "Credits for whoever built and runs the site, and anything you want to say \
-         about how it was made."
-    ))
-    .category(category())
-    .order(40)
-    .icon("users")
-    .permission(PERMISSION)
 }
 
 // -------------------------------------------------------------- security.txt
@@ -492,52 +346,15 @@ impl SecuritySettings {
     }
 }
 
-fn security_item() -> SettingsItem {
-    SettingsItem::new(
-        SecuritySettings::CODE,
-        t!("Security contact"),
-        vec![
-            FormField::repeater(
-                "contacts",
-                t!("Contacts"),
-                vec![FormField::text("url", t!("Address"))],
-            )
-            .help(t!(
-                "An email address as mailto:you@example.com, or a form as an \
-                     https: URL. Most preferred first."
-            )),
-            FormField::date("expires", t!("Valid until"))
-                .required()
-                .help(t!(
-                    "Set a date within the next year and revisit it. An expired \
-                         file tells a researcher nobody is reading the inbox."
-                )),
-            FormField::text("policy", t!("Policy URL")),
-            FormField::text("acknowledgments", t!("Acknowledgements URL")),
-            FormField::text("encryption", t!("Encryption key URL")),
-            FormField::text("hiring", t!("Hiring URL")),
-            FormField::text("preferred_languages", t!("Preferred languages"))
-                .help(t!("Comma-separated language tags, such as en, de.")),
-        ],
-    )
-    .description(t!("Where to report a security problem."))
-    .hint(t!(
-        "Published at the well-known address security researchers check first, so a \
-         report reaches you rather than going nowhere."
-    ))
-    .category(category())
-    .order(50)
-    .icon("shield")
-    .permission(PERMISSION)
-}
-
+/// The five screens, each a file under `admin/` beside the crate; the model
+/// each file's `code` names is defined above it in this module.
 pub fn items() -> Vec<SettingsItem> {
     vec![
-        robots_item(),
-        sitemap_item(),
-        llms_item(),
-        humans_item(),
-        security_item(),
+        laterite_admin::settings!("admin/robots.yaml"),
+        laterite_admin::settings!("admin/sitemap.yaml"),
+        laterite_admin::settings!("admin/llms.yaml"),
+        laterite_admin::settings!("admin/humans.yaml"),
+        laterite_admin::settings!("admin/security.yaml"),
     ]
 }
 

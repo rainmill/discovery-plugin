@@ -1,0 +1,24 @@
+# Settings > Discovery > Summary for language models (llms.txt).
+code: rainmill.discovery.llms
+label: Summary for language models
+description: A summary of this site for language models.
+hint: "Assistants that look for one will read this: a short description of the site and the pages worth reading."
+category: Discovery
+icon: sparkles
+order: 30
+permission: rainmill.discovery.manage
+fields:
+  title:   { label: Site name, rules: [required] }
+  summary: { type: textarea, label: One-line summary }
+  details:
+    type: textarea
+    label: Description
+    help: Plain paragraphs. A heading here would start a new section.
+  links:
+    type: repeater
+    fields:
+      section:
+        help: "Links sharing a section are grouped under it. Name a section Optional for things a reader may skip."
+      title: {}
+      url:   { label: URL }
+      note:  {}

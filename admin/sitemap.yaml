@@ -1,0 +1,29 @@
+# Settings > Discovery > Sitemap (sitemap.xml).
+code: rainmill.discovery.sitemap
+label: Sitemap
+description: Pages you want search engines to know about.
+hint: "Modules that own content add their own pages automatically, so these are the extras: anything the application does not already publish for itself."
+category: Discovery
+icon: map
+order: 20
+permission: rainmill.discovery.manage
+fields:
+  entries:
+    type: repeater
+    label: Pages
+    fields:
+      loc: { label: Path or URL }
+      changefreq:
+        type: select
+        label: Changes
+        options:
+          - { value: "", label: Unspecified }
+          - { value: always, label: Always }
+          - { value: hourly, label: Hourly }
+          - { value: daily, label: Daily }
+          - { value: weekly, label: Weekly }
+          - { value: monthly, label: Monthly }
+          - { value: yearly, label: Yearly }
+          - { value: never, label: Never }
+      priority:
+        help: "0.0 to 1.0, relative to your other pages. Blank means the default of 0.5."
