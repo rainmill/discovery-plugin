@@ -1550,9 +1550,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-admin"
-version = "0.9.31"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d96d6cb3bd61707e9a90d478bcc0b98ef9f417c0a516564f8127e651c446d34b"
+checksum = "d1c723966ef43c2674afb47c9ffdfc81e6521b83a4a8713ede1b67eca5fd12c4"
 dependencies = [
  "ammonia",
  "anyhow",
@@ -1589,9 +1589,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-auth"
-version = "0.9.31"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f210d2c971300ee1468027be720d4a6f7d19a89eb12b614b3148ba9617124367"
+checksum = "3b771c2643157cc1cc1fe5cbf1d528a0e9c1d4c13a00413d52fef7196cf91e01"
 dependencies = [
  "argon2",
  "async-trait",
@@ -1609,9 +1609,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-core"
-version = "0.9.31"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc55ba004ea398797e74df546a018a47637349d1616a218434fc314b1f0cbc0f"
+checksum = "a3b0b8756ab8441b7978c3e62a5af75271677961da751fecd3da035768a3170d"
 dependencies = [
  "async-trait",
  "base64",
@@ -1645,9 +1645,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-macros"
-version = "0.9.31"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9786fbe8a86473a529389ebf31882821d17adf010a804c1d2d371bcdbe51b042"
+checksum = "bd39f207e204530c0a25080be61bbc6089e882d7405df96d73b37b2b483d4aa4"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1656,9 +1656,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-media"
-version = "0.9.31"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "914024dae2524dadb84d421553f75ee5d41fb1d7e4c96ab4349aff39e797137f"
+checksum = "36c6dc739479af9381e3370cef8f545fad37c6a44563cbf93f838f8fa4476af1"
 dependencies = [
  "ammonia",
  "async-trait",
