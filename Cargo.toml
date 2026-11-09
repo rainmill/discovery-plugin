@@ -1,7 +1,7 @@
 [package]
 name = "rainmill-discovery"
 version = "0.1.0"
-description = "Rainmill Discovery: the files a site publishes about itself (robots.txt, sitemap.xml, llms.txt, humans.txt, security.txt), for Laterite"
+description = "robots.txt, sitemap.xml, llms.txt, humans.txt and security.txt for Laterite. One definition serves a database-backed site and a static build"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rainmill/discovery-plugin"
