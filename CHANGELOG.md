@@ -7,6 +7,8 @@ bump is breaking and a patch is additive.
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-10
+
 ### Added
 
 - First release. robots.txt, sitemap.xml, llms.txt, humans.txt and security.txt for Laterite. One definition serves a database-backed site and a static build.
