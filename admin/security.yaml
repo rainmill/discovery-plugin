@@ -1,6 +1,6 @@
 # Settings > Discovery > Security contact (security.txt).
 code: rainmill.discovery.security
-label: Security contact
+label: Security Contact
 description: Where to report a security problem.
 hint: "Published at the well-known address security researchers check first, so a report reaches you rather than going nowhere."
 category: Discovery

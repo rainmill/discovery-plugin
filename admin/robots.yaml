@@ -1,6 +1,6 @@
 # Settings > Discovery > Crawler rules (robots.txt).
 code: rainmill.discovery.robots
-label: Crawler rules
+label: Crawler Rules
 description: "Which crawlers may visit, and what they may not."
 hint: "The admin panel is always excluded, whatever you put here."
 category: Discovery

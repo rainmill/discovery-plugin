@@ -10,6 +10,7 @@ bump is breaking and a patch is additive.
 ### Changed
 
 - Requires Laterite 0.10.
+- Settings labels are in title case (Crawler Rules, Security Contact).
 
 ## [0.1.0] - 2026-11-10
 

@@ -1,6 +1,6 @@
 # Settings > Discovery > Summary for language models (llms.txt).
 code: rainmill.discovery.llms
-label: Summary for language models
+label: Summary for Language Models
 description: A summary of this site for language models.
 hint: "Assistants that look for one will read this: a short description of the site and the pages worth reading."
 category: Discovery
