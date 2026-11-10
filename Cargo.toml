@@ -20,7 +20,7 @@ static = true
 # other modules contribute. This is what an application installing the plugin
 # wants.
 default = ["admin"]
-admin = ["dep:laterite-admin", "dep:serde_json"]
+admin = ["dep:laterite-admin"]
 
 [dependencies]
 # The documents render from the framework's site envelope (`laterite_core::site`).
@@ -30,11 +30,6 @@ serde = { version = "1", features = ["derive"] }
 # The YAML definitions a static website keeps under plugins/rainmill.discovery/.
 serde-saphyr = "1.3"
 
-# The admin half. Version-only so this manifest is location-independent; the
-# workspace that builds the plugin resolves them through its own
-# [patch.crates-io] until Laterite publishes.
-# Settings values are stored as JSON, so this belongs to the admin half too.
-serde_json = { version = "1", optional = true }
 laterite-admin = { version = "0.10", optional = true }
 
 [dev-dependencies]
