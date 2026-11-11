@@ -1550,9 +1550,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-admin"
-version = "0.10.0"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d1c723966ef43c2674afb47c9ffdfc81e6521b83a4a8713ede1b67eca5fd12c4"
+checksum = "161b79c8a7fc41a24b63ad78e7e52133795be03c1294090616cf347285c63297"
 dependencies = [
  "ammonia",
  "anyhow",
@@ -1574,6 +1574,7 @@ dependencies = [
  "laterite-media",
  "listenfd",
  "rand",
+ "regex",
  "sea-query",
  "serde",
  "serde-saphyr",
@@ -1589,9 +1590,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-auth"
-version = "0.10.0"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3b771c2643157cc1cc1fe5cbf1d528a0e9c1d4c13a00413d52fef7196cf91e01"
+checksum = "ed63a9def4a401cd5993e04031afb7c7b39d8e3aa7642202de5457badc010218"
 dependencies = [
  "argon2",
  "async-trait",
@@ -1609,9 +1610,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-core"
-version = "0.10.0"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a3b0b8756ab8441b7978c3e62a5af75271677961da751fecd3da035768a3170d"
+checksum = "c27447b29fee33119039c3e233ef7d3d7d6dc6a80e89f544f8646b28e0adfd3c"
 dependencies = [
  "async-trait",
  "base64",
@@ -1645,9 +1646,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-macros"
-version = "0.10.0"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd39f207e204530c0a25080be61bbc6089e882d7405df96d73b37b2b483d4aa4"
+checksum = "172fb80f9ea0a5cb8430718a79f5b652a6d5a90f555ddc5c29298127f9407633"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1656,9 +1657,9 @@ dependencies = [
 
 [[package]]
 name = "laterite-media"
-version = "0.10.0"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "36c6dc739479af9381e3370cef8f545fad37c6a44563cbf93f838f8fa4476af1"
+checksum = "50a4f68d8a2f658ba9a542ad3988c40cf66f189f9daa2cd22a60efa758224807"
 dependencies = [
  "ammonia",
  "async-trait",
@@ -2287,7 +2288,6 @@ dependencies = [
  "laterite-core",
  "serde",
  "serde-saphyr",
- "serde_json",
  "tempfile",
  "tokio",
 ]
@@ -2344,6 +2344,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "737970939a87c6fa31e7acad13307bccbb017a073b695b6089a2c484f929e20e"
 dependencies = [
  "bitflags",
+]
+
+[[package]]
+name = "regex"
+version = "1.13.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f020237b6c8eed93db2e2cb53c00c60a8e1bc73da7d073199a1180401450218d"
+dependencies = [
+ "aho-corasick",
+ "memchr",
+ "regex-automata",
+ "regex-syntax",
 ]
 
 [[package]]
